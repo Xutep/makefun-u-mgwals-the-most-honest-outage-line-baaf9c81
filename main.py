@@ -14,8 +14,16 @@ LINE = (
     "I'll update when I can verify anything."
 )
 
+# The sealed gate accepts 1 to 160 characters; refuse to write anything
+# outside that range rather than submit an invalid entry.
+MAX_CHARS = 160
+
 
 def main() -> None:
+    if not 1 <= len(LINE) <= MAX_CHARS:
+        raise ValueError(
+            f"entry line is {len(LINE)} characters, must be 1-{MAX_CHARS}"
+        )
     output_dir = os.environ.get("MAKEFUN_OUTPUT_DIR", "/output")
     os.makedirs(output_dir, exist_ok=True)
     path = os.path.join(output_dir, "entry.txt")
